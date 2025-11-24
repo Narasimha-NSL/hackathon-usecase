@@ -2,13 +2,7 @@ FROM node:18
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json from application-service folder
-COPY application-service/package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application
+# Copy application source code
 COPY application-service/. .
 
 # Expose the port your app runs on
