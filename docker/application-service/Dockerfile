@@ -1,12 +1,12 @@
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY application-service/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY application-service/. .
 
 EXPOSE 3000
 
