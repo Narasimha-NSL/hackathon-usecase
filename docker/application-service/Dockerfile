@@ -2,6 +2,6 @@ FROM node:18
 WORKDIR /app
 COPY src/package*.json ./
 RUN npm install
-COPY . .
+COPY src ./
 EXPOSE 5000
 CMD ["node", "index.js"]
