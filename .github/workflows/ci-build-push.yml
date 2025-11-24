@@ -27,12 +27,17 @@ jobs:
 
     - name: Build and Push Order
       run: |
-        docker build -t narasimha.azurecr.io/order-service:latest ./order-service
+        docker build -f docker/order-service/Dockerfile \
+  -t ***.azurecr.io/order-service:latest \
+  ./order-service
+
         docker push narasimha.azurecr.io/order-service:latest
 
     - name: Build and Push Application
       run: |
-        docker build -t narasimha.azurecr.io/application-service:latest ./application-service
+        docker build -f docker/application-service/Dockerfile \
+  -t ***.azurecr.io/application-service:latest \
+  ./application-service
         docker push narasimha.azurecr.io/application-service:latest
 
 
