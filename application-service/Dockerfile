@@ -1,19 +1,20 @@
-# application-service/Dockerfile
+# Use Node.js 18
 FROM node:18
 
+# Set working directory
 WORKDIR /app
 
-# Copy only package files if they exist
-COPY package*.json ./ 2>/dev/null || echo "No package.json, skipping npm install"
+# Copy package.json and package-lock.json if they exist
+COPY package*.json ./
 
-# Install dependencies if package.json exists
+# Install dependencies only if package.json exists
 RUN if [ -f package.json ]; then npm install; fi
 
-# Copy the rest of the source code
+# Copy the rest of the application code
 COPY . .
 
-# Expose port
-EXPOSE 3005
+# Expose port (adjust to your app)
+EXPOSE 3000
 
-# Start the app
-CMD ["node", "src/index.js"]
+# Run the application
+CMD ["node", "index.js"]
