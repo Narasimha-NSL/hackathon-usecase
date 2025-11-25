@@ -3,13 +3,11 @@ FROM node:18
 
 # Set working directory
 WORKDIR /app
-
-# Copy package files and install dependencies
-COPY package*.json ./
+COPY src/package*.json ./
 RUN npm install --production
 
-# Copy source code
-COPY . .
+# Copy the rest of the source code
+COPY src/. .
 
 # Expose the port (optional, for clarity)
 EXPOSE 3003
