@@ -1,21 +1,19 @@
-# Use Node.js 18
+# Use Node.js 18 LTS
 FROM node:18
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json if they exist
+# Copy package files and install dependencies
 COPY package*.json ./
+RUN npm install --production
 
-# Install dependencies only if package.json exists
-RUN if [ -f package.json ]; then npm install; fi
+# Copy source code
+COPY src/ ./src
 
-# Copy the rest of the application code
-COPY . .
+# Expose the port
+EXPOSE 3001
 
-# Expose port (adjust to your app)
-EXPOSE 3000
-
-# Run the application
-CMD ["node", "index.js"]
+# Start the application
+CMD ["node", "src/index.js"]
 
