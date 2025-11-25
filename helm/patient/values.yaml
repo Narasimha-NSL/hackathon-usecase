@@ -3,9 +3,20 @@ replicaCount: 2
 image:
   repository: narasimha.azurecr.io/patient-service
   tag: latest
+  pullPolicy: Always
 
 service:
-  type: LoadBalancer
-  port: 30001      # External port
-  targetPort: 3000 # Container port
+  type: ClusterIP
+  port: 3003
 
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  - name: PORT
+    value: "3003"
