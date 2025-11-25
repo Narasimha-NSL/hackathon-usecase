@@ -5,16 +5,14 @@ FROM node:18
 WORKDIR /app
 
 # Copy package files and install dependencies
-COPY COPY src/package*.json ./
-
+COPY package*.json ./
 RUN npm install --production
 
 # Copy source code
 COPY src/ ./src
 
-# Expose the port
+# Expose the port (optional, for clarity)
 EXPOSE 3001
 
 # Start the application
 CMD ["node", "src/index.js"]
-
