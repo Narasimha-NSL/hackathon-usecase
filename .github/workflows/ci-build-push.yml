@@ -19,7 +19,7 @@ jobs:
 
       - name: Build and Push Patient Service
         run: |
-          docker build -f ./patient-service/Dockerfile -t narasimha.azurecr.io/patient-service:latest ./patient-service
+          docker build -f ./patient-service/src/Dockerfile -t narasimha.azurecr.io/patient-service:latest ./patient-service
           docker push narasimha.azurecr.io/patient-service:latest
 
       - name: Build and Push Order Service
@@ -31,4 +31,3 @@ jobs:
         run: |
           docker build -f ./application-service/Dockerfile -t narasimha.azurecr.io/application-service:latest ./application-service
           docker push narasimha.azurecr.io/application-service:latest
-
