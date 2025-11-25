@@ -32,6 +32,3 @@ jobs:
           docker build -f ./application-service/Dockerfile -t narasimha.azurecr.io/application-service:latest ./application-service
           docker push narasimha.azurecr.io/application-service:latest
 
-        run: |
-          docker build -t narasimha.azurecr.io/application-service:latest ./application-service
-          docker push narasimha.azurecr.io/application-service:latest
