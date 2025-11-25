@@ -9,10 +9,10 @@ COPY package*.json ./
 RUN npm install --production
 
 # Copy source code
-COPY src/ ./src
+COPY . .
 
 # Expose the port (optional, for clarity)
-EXPOSE 3001
+EXPOSE 3003
 
 # Start the application
-CMD ["node", "src/index.js"]
+CMD ["node", "index.js"]
