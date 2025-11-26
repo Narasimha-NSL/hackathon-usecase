@@ -12,7 +12,7 @@ RUN npm install --production
 COPY src/ ./src
 
 # Expose the port (optional, for clarity)
-EXPOSE 3001
+EXPOSE 3000
 
 # Start the application
 CMD ["node", "src/index.js"]
