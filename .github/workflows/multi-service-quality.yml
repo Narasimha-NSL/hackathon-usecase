@@ -1,0 +1,94 @@
+name: Multi-Service Quality Checks
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+
+    # MATRIX → Runs workflow for 3 services
+    strategy:
+      matrix:
+        service: ["application-service", "patient-service", "order-service"]
+
+    steps:
+      # ----------------------------------------------------
+      # 1. Checkout repo
+      # ----------------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # ----------------------------------------------------
+      # 2. Setup Node.js
+      # ----------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # ----------------------------------------------------
+      # 3. Install dependencies for each service
+      # ----------------------------------------------------
+      - name: Install Dependencies
+        working-directory: ./${{ matrix.service }}
+        run: |
+          if [ -f "package.json" ]; then
+            npm install
+          else
+            echo "No package.json found — skipping installation"
+          fi
+
+      # ----------------------------------------------------
+      # 4. Run Unit Tests
+      # ----------------------------------------------------
+      - name: Run Unit Tests
+        working-directory: ./${{ matrix.service }}
+        run: |
+          if [ -d "tests" ] || [ -d "__tests__" ]; then
+            npm test --passWithNoTests
+          else
+            echo "No test directory found — skipping"
+          fi
+
+      # ----------------------------------------------------
+      # 5. Run Integration Tests
+      # ----------------------------------------------------
+      - name: Run Integration Tests
+        working-directory: ./${{ matrix.service }}
+        run: |
+          if [ -d "integration-tests" ]; then
+            npm run test:integration
+          else
+            echo "No integration tests found — skipping"
+          fi
+
+      # ----------------------------------------------------
+      # 6. ESLint Code Quality
+      # ----------------------------------------------------
+      - name: Run ESLint
+        working-directory: ./${{ matrix.service }}
+        run: |
+          if [ -f ".eslintrc.json" ] || [ -f ".eslintrc.js" ]; then
+            npx eslint .
+          else
+            echo "No ESLint config found — skipping"
+          fi
+
+      # ----------------------------------------------------
+      # 7. Install Trivy
+      # ----------------------------------------------------
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.47.0_Linux-64bit.deb
+          sudo dpkg -i trivy_0.47.0_Linux-64bit.deb
+
+      # ----------------------------------------------------
+      # 8. Trivy FS Scan for each service
+      # ----------------------------------------------------
+      - name: Run Trivy Security Scan
+        run: trivy fs --exit-code 1 --severity CRITICAL,HIGH ./${{ matrix.service }}
