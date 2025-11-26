@@ -3,6 +3,11 @@ const express = require('express');
     const port = process.env.PORT || 3000;
     
     app.use(express.json());
+
+    app.get("/", (req, res) => {
+      res.send("Patient service is running");
+    });
+
     
     // In-memory data store (replace with a database in a real application)
     let patients = [
