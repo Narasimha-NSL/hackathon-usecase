@@ -1,12 +1,18 @@
+# Use Node.js 18 LTS
 FROM node:18
 
+# Set working directory
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files and install dependencies
+COPY src/package*.json ./
 RUN npm install --production
 
+# Copy source code
 COPY src/ ./src
 
+# Expose the port (optional, for clarity)
 EXPOSE 3001
 
+# Start the application
 CMD ["node", "src/index.js"]
