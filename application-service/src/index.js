@@ -3,6 +3,11 @@ const express = require('express');
     const port = process.env.PORT || 3001;
     
     app.use(express.json());
+
+    app.get("/", (req, res) => {
+      res.send("Application service is running Successfully! 🚀");
+    });
+
     
     // In-memory data store (replace with a database in a real application)
     let appointments = [
